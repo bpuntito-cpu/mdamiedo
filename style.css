@@ -17,14 +17,17 @@ html, body {
   height: 100vh;
 }
 
-#inputWrapper {
+inputWrapper {
   position: absolute;
   left: 50%;
   top: 46%;
   transform: translate(-50%, -50%);
   z-index: 10;
   text-align: center;
-}
+
+  background: rgba(255,255,255,0.9);
+  padding: 25px 35px;
+  border-radius: 12px;
 
 h1 {
   margin: 0 0 24px 0;
@@ -120,4 +123,5 @@ background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
 }
+
 

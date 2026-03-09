@@ -1,5 +1,25 @@
-<div id="inputWrapper">
-  <h1>qué te da miedo?</h1>
-  <input id="inputFrase" placeholder=""/>
-  <button id="btnEnviar">Enviar</button>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>que te da miedo?</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="stage">
+    <div id="frasesLayer"></div>
+
+    <div id="inputWrapper">
+      <h1>qué te da miedo?</h1>
+      <div class="controls">
+        <input id="inputFrase" type="text" maxlength="120" />
+        <button id="btnEnviar">Enviar</button>
+      </div>
+      <p id="mensajeEstado"></p>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -10,14 +10,14 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-// PEGA AQUI TU CONFIG REAL DE FIREBASE
+// Configuración de tu proyecto Firebase
 const firebaseConfig = {
-  apiKey: "AQUI_TU_API_KEY",
-  authDomain: "AQUI_TU_AUTH_DOMAIN",
-  projectId: "AQUI_TU_PROJECT_ID",
-  storageBucket: "AQUI_TU_STORAGE_BUCKET",
-  messagingSenderId: "AQUI_TU_MESSAGING_SENDER_ID",
-  appId: "AQUI_TU_APP_ID"
+  apiKey: "AIzaSyATEkMaa_PRw1T2-sZ1CyhdRElG4COJwqA",
+  authDomain: "bpuntito-8131c.firebaseapp.com",
+  projectId: "bpuntito-8131c",
+  storageBucket: "bpuntito-8131c.firebasestorage.app",
+  messagingSenderId: "10419604048",
+  appId: "1:10419604048:web:0e618d96e966d4b8261f55"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -136,4 +136,5 @@ const q = query(
 onSnapshot(q, (snapshot) => {
   renderizarFrases(snapshot.docs);
 });
+
 

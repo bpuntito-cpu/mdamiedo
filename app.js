@@ -84,7 +84,7 @@ function renderizarFrases(docs) {
 }
 
 async function guardarFrase() {
-  const texto = input.value.trim();
+  const texto = input.value.trim().slice(0, 120);
 
   if (!texto) {
     mensajeEstado.textContent = "Escribe algo primero.";
@@ -136,3 +136,4 @@ const q = query(
 onSnapshot(q, (snapshot) => {
   renderizarFrases(snapshot.docs);
 });
+

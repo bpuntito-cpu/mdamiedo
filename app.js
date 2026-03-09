@@ -1,6 +1,12 @@
-// Importar Firebase desde CDN
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 // Configuración de tu proyecto Firebase
 const firebaseConfig = {
@@ -12,54 +18,98 @@ const firebaseConfig = {
   appId: "1:10419604048:web:0e618d96e966d4b8261f55"
 };
 
-// Inicializar Firebase y Firestore
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const frasesCol = collection(db, "frases"); // tu colección
 
-// Contenedor general
-const contenedor = document.body;
+const input = document.getElementById("inputFrase");
+const boton = document.getElementById("btnEnviar");
+const frasesLayer = document.getElementById("frasesLayer");
+const mensajeEstado = document.getElementById("mensajeEstado");
 
-// Función para mostrar frase flotante
-function mostrarFrase(texto) {
-  const div = document.createElement("div");
-  div.className = "frase";
-  div.innerText = texto;
+const frasesMostradas = new Set();
 
-  const ancho = contenedor.clientWidth - 200;
-  const alto = contenedor.clientHeight - 50;
-  div.style.left = Math.random() * ancho + "px";
-  div.style.top = Math.random() * alto + "px";
-
-  contenedor.appendChild(div);
-
-  // Animación fade-in y ligero rebote
-  requestAnimationFrame(() => {
-    div.style.opacity = 1;
-    div.style.transform = "translateY(-10px)";
-    setTimeout(() => div.style.transform = "translateY(0px)", 200);
-  });
+function numeroRandom(min, max) {
+  return Math.random() * (max - min) + min;
 }
 
-// Cargar todas las frases existentes desde Firebase
-async function cargarFrases() {
-  const snapshot = await getDocs(frasesCol);
-  snapshot.forEach(doc => mostrarFrase(doc.data().texto));
+function crearFraseEnPantalla(texto, idUnico) {
+  if (frasesMostradas.has(idUnico)) return;
+  frasesMostradas.add(idUnico);
+
+  const frase = document.createElement("div");
+  frase.className = "frase";
+  frase.textContent = texto;
+
+  const anchoPantalla = window.innerWidth;
+  const altoPantalla = window.innerHeight;
+
+  const zonaCentralX = anchoPantalla * 0.5;
+  const zonaCentralY = altoPantalla * 0.46;
+
+  let left = numeroRandom(20, anchoPantalla - 180);
+  let top = numeroRandom(20, altoPantalla - 40);
+
+  const dentroZonaCentral =
+    left > zonaCentralX - 380 &&
+    left < zonaCentralX + 280 &&
+    top > zonaCentralY - 120 &&
+    top < zonaCentralY + 120;
+
+  if (dentroZonaCentral) {
+    top = numeroRandom(altoPantalla * 0.72, altoPantalla - 40);
+  }
+
+  frase.style.left = `${left}px`;
+  frase.style.top = `${top}px`;
+
+  frasesLayer.appendChild(frase);
 }
 
-// Evento al presionar "Enviar"
-document.getElementById("btnEnviar").addEventListener("click", async () => {
-  const input = document.getElementById("inputFrase");
+async function guardarFrase() {
   const texto = input.value.trim();
-  if(!texto) return;
 
-  // Guardar en Firebase
-  await addDoc(frasesCol, { texto: texto });
+  if (!texto) {
+    mensajeEstado.textContent = "Escribe algo primero.";
+    return;
+  }
 
-  // Mostrar inmediatamente en pantalla
-  mostrarFrase(texto);
-  input.value = "";
+  boton.disabled = true;
+  mensajeEstado.textContent = "Enviando...";
+
+  try {
+    await addDoc(collection(db, "miedos"), {
+      texto: texto,
+      createdAt: serverTimestamp()
+    });
+
+    input.value = "";
+    mensajeEstado.textContent = "Guardado.";
+  } catch (error) {
+    console.error(error);
+    mensajeEstado.textContent = "No se pudo guardar. Revisa Firebase.";
+  } finally {
+    boton.disabled = false;
+  }
+}
+
+boton.addEventListener("click", guardarFrase);
+
+input.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    guardarFrase();
+  }
 });
 
-// Cargar las frases al inicio
-cargarFrases();
+const q = query(collection(db, "miedos"));
+
+onSnapshot(q, (snapshot) => {
+  snapshot.docChanges().forEach((change) => {
+    if (change.type === "added") {
+      const data = change.doc.data();
+
+      if (data.texto) {
+        crearFraseEnPantalla(data.texto, change.doc.id);
+      }
+    }
+  });
+});

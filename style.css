@@ -6,10 +6,9 @@ html, body{
 margin:0;
 width:100%;
 height:100%;
-font-family:Avenir, sans-serif;
+font-family:Arial, Helvetica, sans-serif;
 
-/* IMAGEN DE FONDO */
-background-image:url("21.jpg");
+background-image:url("fondo.jpg");
 background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
@@ -18,13 +17,15 @@ overflow:hidden;
 }
 
 /* CONTENEDOR GENERAL */
+
 #stage{
 position:relative;
 width:100vw;
 height:100vh;
 }
 
-/* AREA DONDE APARECEN LAS FRASES */
+/* FRASES QUE APARECEN */
+
 #frasesLayer{
 position:absolute;
 inset:0;
@@ -32,17 +33,27 @@ width:100%;
 height:100%;
 }
 
-/* CADA FRASE */
 .frase{
 position:absolute;
+max-width:40vw;
 font-size:18px;
-color:#FFF;
-white-space:nowrap;
+color:white;
+white-space:normal;
+word-break:break-word;
 opacity:0.95;
 pointer-events:none;
+text-shadow:0 2px 6px rgba(0,0,0,0.7);
 }
 
-/* CAJA CENTRAL */
+.fecha{
+display:block;
+margin-top:3px;
+font-size:11px;
+opacity:0.7;
+}
+
+/* CONTENEDOR CENTRAL */
+
 #inputWrapper{
 position:absolute;
 left:50%;
@@ -50,21 +61,20 @@ top:46%;
 transform:translate(-50%,-50%);
 z-index:10;
 text-align:center;
-
-background:rgba(255,255,255,0.92);
-padding:30px 40px;
-border-radius:14px;
-box-shadow:0 6px 25px rgba(0,0,0,0.2);
 }
 
 /* TITULO */
+
 h1{
-margin:0 0 20px 0;
-font-size:42px;
+margin:0 0 18px 0;
+font-size:46px;
 font-weight:700;
+color:white;
+text-shadow:0 3px 10px rgba(0,0,0,0.6);
 }
 
 /* INPUT + BOTON */
+
 .controls{
 display:flex;
 justify-content:center;
@@ -73,60 +83,75 @@ gap:15px;
 }
 
 /* INPUT */
+
 #inputFrase{
 width:420px;
 max-width:60vw;
 height:60px;
 font-size:26px;
 padding:10px 15px;
-border:1px solid #aaa;
-border-radius:6px;
+
+background:white;
+border:none;
+border-radius:8px;
+
+box-shadow:0 4px 12px rgba(0,0,0,0.2);
 }
 
 /* BOTON */
+
 #btnEnviar{
 height:60px;
 padding:0 25px;
-font-size:24px;
-border:1px solid #aaa;
-border-radius:6px;
-background:#efefef;
+font-size:22px;
+border:none;
+border-radius:8px;
+
+background:#ffffff;
 cursor:pointer;
+
+box-shadow:0 4px 12px rgba(0,0,0,0.2);
 }
 
 #btnEnviar:hover{
-background:#e4e4e4;
+background:#f2f2f2;
 }
 
 #mensajeEstado{
 margin-top:10px;
 font-size:14px;
 min-height:20px;
+color:white;
 }
 
 /* VERSION CELULAR */
+
 @media (max-width:600px){
 
 h1{
-font-size:26px;
+font-size:28px;
+}
+
+.controls{
+flex-direction:column;
+gap:10px;
 }
 
 #inputFrase{
-width:220px;
+width:240px;
 height:45px;
 font-size:16px;
 }
 
 #btnEnviar{
+width:240px;
 height:45px;
 font-size:16px;
-padding:0 12px;
 }
 
-.controls{
-gap:10px;
+.frase{
+max-width:60vw;
+font-size:14px;
 }
 
 }
-
-

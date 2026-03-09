@@ -1,13 +1,42 @@
-body{
-font-family: Arial;
-text-align:center;
-margin-top:100px;
+body {
+  margin:0;
+  font-family: Avenir, sans-serif;
+  height:100vh;
+  overflow:hidden;
+  background:#f9f9f9;
+  position: relative;
 }
 
-input{
-padding:10px;
+#inputWrapper {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
-button{
-padding:10px;
+#inputWrapper h1 {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+#inputFrase {
+  width:400px;
+  font-size:24px;
+  padding:10px;
+}
+
+#btnEnviar {
+  font-size:24px;
+  padding:10px;
+  margin-left: 10px;
+}
+
+.frase {
+  position:absolute;
+  font-family: Avenir;
+  font-size:20px;
+  color:black;
+  opacity:0;
+  transition: opacity 0.5s, transform 0.5s;
 }

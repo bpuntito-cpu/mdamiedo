@@ -87,3 +87,26 @@ h1 {
   opacity: 0.95;
 }
 
+@media (max-width: 600px) {
+
+h1{
+font-size:28px;
+}
+
+#inputFrase{
+width:240px;
+height:45px;
+font-size:18px;
+}
+
+#btnEnviar{
+height:45px;
+font-size:18px;
+padding:0 14px;
+}
+
+.controls{
+gap:10px;
+}
+
+}

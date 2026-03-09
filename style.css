@@ -110,3 +110,14 @@ gap:10px;
 }
 
 }
+html, body {
+margin:0;
+width:100%;
+height:100%;
+
+background-image:url("20.jpg");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+}
+

@@ -36,7 +36,7 @@ height:100%;
 .frase{
 position:absolute;
 font-size:18px;
-color:#111;
+color:#FFF;
 white-space:nowrap;
 opacity:0.95;
 pointer-events:none;
@@ -128,4 +128,5 @@ gap:10px;
 }
 
 }
+
 

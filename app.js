@@ -10,7 +10,7 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-// Configuración de Firebase
+// Configuración de tu proyecto Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyATEkMaa_PRw1T2-sZ1CyhdRElG4COJwqA",
   authDomain: "bpuntito-8131c.firebaseapp.com",
@@ -20,11 +20,9 @@ const firebaseConfig = {
   appId: "1:10419604048:web:0e618d96e966d4b8261f55"
 };
 
-// Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Elementos del DOM
 const input = document.getElementById("inputFrase");
 const boton = document.getElementById("btnEnviar");
 const frasesLayer = document.getElementById("frasesLayer");
@@ -33,30 +31,25 @@ const mensajeEstado = document.getElementById("mensajeEstado");
 const frasesMostradas = new Map();
 const MAX_FRASES_EN_PANTALLA = 40;
 
-// Función para generar número aleatorio
 function numeroRandom(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-// Obtener tamaño del área donde se colocan las frases
 function obtenerDimensionesLayer() {
   const ancho = frasesLayer.offsetWidth || window.innerWidth;
   const alto = frasesLayer.offsetHeight || window.innerHeight;
-
   return { ancho, alto };
 }
 
-// Generar una posición segura dentro de la pantalla
 function generarPosicionAleatoria() {
   const { ancho, alto } = obtenerDimensionesLayer();
 
-  const x = numeroRandom(20, Math.max(40, ancho - 220));
-  const y = numeroRandom(20, Math.max(40, alto - 120));
+  const x = numeroRandom(20, Math.max(40, ancho - 260));
+  const y = numeroRandom(20, Math.max(40, alto - 140));
 
   return { x, y };
 }
 
-// Formatear fecha
 function formatearFecha(timestamp) {
   if (!timestamp) return "";
 
@@ -70,7 +63,6 @@ function formatearFecha(timestamp) {
   });
 }
 
-// Crear elemento visual de una frase
 function crearElementoFrase(data, id) {
   const frase = document.createElement("div");
   frase.className = "frase";
@@ -87,11 +79,12 @@ function crearElementoFrase(data, id) {
     frase.appendChild(fecha);
   }
 
-  // Si la frase ya tiene posición guardada, se usa.
-  // Si no, se le asigna una aleatoria para que no se amontone.
-  const posicion = generarPosicionAleatoria();
-  const x = data.x ?? posicion.x;
-  const y = data.y ?? posicion.y;
+  // Si la frase ya tiene coordenadas guardadas, las usa.
+  // Si no, genera unas aleatorias para evitar que se amontonen.
+  const posicionFallback = generarPosicionAleatoria();
+
+  const x = data.x ?? posicionFallback.x;
+  const y = data.y ?? posicionFallback.y;
 
   frase.style.position = "absolute";
   frase.style.left = `${x}px`;
@@ -100,7 +93,6 @@ function crearElementoFrase(data, id) {
   return frase;
 }
 
-// Renderizar frases
 function renderizarFrases(docs) {
   frasesLayer.innerHTML = "";
   frasesMostradas.clear();
@@ -115,7 +107,6 @@ function renderizarFrases(docs) {
   });
 }
 
-// Guardar frase nueva
 async function guardarFrase() {
   const texto = input.value.trim().slice(0, 120);
 
@@ -147,7 +138,6 @@ async function guardarFrase() {
   }
 }
 
-// Eventos
 boton.addEventListener("click", guardarFrase);
 
 input.addEventListener("keydown", function (event) {
@@ -156,14 +146,13 @@ input.addEventListener("keydown", function (event) {
   }
 });
 
-// Consulta de frases
+// Escucha solo las últimas frases
 const q = query(
   collection(db, "miedos"),
   orderBy("createdAt", "desc"),
   limit(MAX_FRASES_EN_PANTALLA)
 );
 
-// Escuchar cambios en tiempo real
 onSnapshot(q, (snapshot) => {
   renderizarFrases(snapshot.docs);
 });
